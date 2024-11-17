@@ -13,6 +13,7 @@ import (
 type Sprite struct{
   Img *ebiten.Image
   X, Y float64
+  FollowsPlayer bool
 }
 
 type Game struct{
@@ -117,13 +118,19 @@ func main() {
       Y: 50.0,
     },
     sprites: []*Sprite {
-      &Sprite{
+      {
         Img: SkeletonImg,
         X: 100.0,
         Y: 100.0,
       },
+      {
+        Img: SkeletonImg,
+        X: 80.0,
+        Y: 80.0,
+      },
     },
   }
+
   if err := ebiten.RunGame(&Game); err != nil {
 		log.Fatal(err)
 	}
