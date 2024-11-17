@@ -38,7 +38,20 @@ func (g *Game) Update() error {
     g.player.Y += 2 
   }
 
+  for _, sprite:= range g.sprites{
+    if sprite.X < g.player.X {
+      sprite.X += 1
+    } else if sprite.X > g.player.X {
+      sprite.X -= 1
+    }
+    if sprite.Y < g.player.Y {
+      sprite.Y += 1
+    } else if sprite.X > g.player.Y {
+      sprite.Y -= 1
+    }
 
+  }
+    
 	return nil
 }
 
