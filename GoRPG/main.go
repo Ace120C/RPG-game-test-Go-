@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"log"
@@ -11,14 +12,29 @@ import (
 
 
 type Sprite struct{
-  Img *ebiten.Image
+  Img  *ebiten.Image
   X, Y float64
+}
+
+type Player struct{
+  *Sprite
+  Health uint
+}
+
+type Enemy struct {
+  *Sprite
   FollowsPlayer bool
 }
 
+type Potion struct {
+  *Sprite
+  AmtHeal uint
+}
+
 type Game struct{
-  player *Sprite
-  sprites []*Sprite
+  player  *Player
+  enemies []*Enemy
+  potions []*Potion
 }
 
 func (g *Game) Update() error {
@@ -39,20 +55,27 @@ func (g *Game) Update() error {
     g.player.Y += 2 
   }
 
-  for _, sprite:= range g.sprites{
-    if sprite.X < g.player.X {
-      sprite.X += 1
-    } else if sprite.X > g.player.X {
-      sprite.X -= 1
+  for _, sprite:= range g.enemies{
+    if sprite.FollowsPlayer {
+      if sprite.X < g.player.X {
+        sprite.X += 1
+      } else if sprite.X > g.player.X {
+        sprite.X -= 1
+     }
+      if sprite.Y < g.player.Y {
+        sprite.Y += 1
+      } else if sprite.X > g.player.Y {
+        sprite.Y -= 1
+      }
+  
     }
-    if sprite.Y < g.player.Y {
-      sprite.Y += 1
-    } else if sprite.X > g.player.Y {
-      sprite.Y -= 1
-    }
-
   }
-    
+  for _, potion := range g.potions {
+    if g.player.X > potion.X {
+      g.player.Health += potion.AmtHeal
+      fmt.Printf("Picked up potion! health: %d\n", g.player.Health)
+    }
+  } 
 	return nil
 }
 
@@ -72,7 +95,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
   opts.GeoM.Reset()
 
-  for _, sprite := range g.sprites{
+  for _, sprite := range g.enemies{
     opts.GeoM.Translate(sprite.X, sprite.Y)
 
     screen.DrawImage(
@@ -85,6 +108,21 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
     opts.GeoM.Reset()
   }
+
+  for _, sprite := range g.potions{
+    opts.GeoM.Translate(sprite.X, sprite.Y)
+
+    screen.DrawImage(
+      sprite.Img.SubImage(
+      image.Rect(0, 0, 16, 16),
+      ).(*ebiten.Image),
+      &opts,
+
+    )
+
+    opts.GeoM.Reset()
+  }
+
 
 	//ebitenutil.DebugPrint(screen, "Hello, World!")
 }
@@ -109,24 +147,48 @@ func main() {
     //handle the error
     log.Fatal(err)
   }
+  potionImg, _, err := ebitenutil.NewImageFromFile("/home/ace/Golang/GoRPG/Assets/Images/potion.png")
+  if err != nil {
+    //handle the error
+    log.Fatal(err)
+  }
 
   
   Game := Game {
-    player: &Sprite{
-      Img: PlayerImg,
-      X: 50.0,
-      Y: 50.0,
+    player: &Player{
+      Sprite: &Sprite{
+        Img: PlayerImg,
+        X: 50.0,
+        Y: 50.0,
+      }, 
+      Health: 3,
     },
-    sprites: []*Sprite {
+    enemies: []*Enemy {
       {
-        Img: SkeletonImg,
-        X: 100.0,
-        Y: 100.0,
+        &Sprite{
+         Img: SkeletonImg,
+          X: 100.0,
+          Y: 100.0,
+        },      
+        true,
       },
       {
-        Img: SkeletonImg,
-        X: 80.0,
-        Y: 80.0,
+        &Sprite{
+          Img: SkeletonImg,
+          X: 50.0,
+          Y: 150.0,
+        },      
+        false,
+      },
+    },
+    potions: []*Potion {
+      {
+        &Sprite{
+          Img: potionImg,
+          X: 210.0,
+          Y: 50.0,
+        },
+        1.0,
       },
     },
   }
