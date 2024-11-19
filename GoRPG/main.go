@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"log"
+  "math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -37,40 +38,53 @@ type Game struct{
   potions []*Potion
 }
 
+
+func norm(a, b float64) (float64, float64)  {
+  h := math.Hypot(a, b)
+  if h == 0{
+    return 0, 0
+  }
+  return a/h, b/h
+  
+}
+
 func (g *Game) Update() error {
+  var dX, dY float64 = 0.0, 0.0
   //react to key presses
   if ebiten.IsKeyPressed(ebiten.KeyRight) {
-    g.player.X += 2 
+    dX += 2 
   }
 
   if ebiten.IsKeyPressed(ebiten.KeyLeft) {
-    g.player.X -= 2 
+    dX -= 2 
   }
 
   if ebiten.IsKeyPressed(ebiten.KeyUp) {
-    g.player.Y -= 2 
+    dY -= 2 
   }
 
   if ebiten.IsKeyPressed(ebiten.KeyDown) {
-    g.player.Y += 2 
+    dY += 2 
   }
+  
+  // Normalize the vector
+  dX, dY = norm(dX, dY)
+
+  const speed = 2
+  
+  g.player.X += dX * speed
+  g.player.Y += dY * speed
 
   for _, sprite:= range g.enemies{
     if sprite.FollowsPlayer {
-      if sprite.X < g.player.X {
-        sprite.X += 1
-      } else if sprite.X > g.player.X {
-        sprite.X -= 1
-     }
-      if sprite.Y < g.player.Y {
-        sprite.Y += 1
-      } else if sprite.X > g.player.Y {
-        sprite.Y -= 1
+      dX, dY := g.player.X-sprite.X, g.player.Y-sprite.Y
+      dX, dY = norm(dX, dY)
+      const enemySpeed = 1.5
+      sprite.X += dX * enemySpeed
+      sprite.Y += dY * enemySpeed
       }
-  
     }
-  }
-  for _, potion := range g.potions {
+for _, potion := range g.potions {
     if g.player.X > potion.X {
       g.player.Health += potion.AmtHeal
       fmt.Printf("Picked up potion! health: %d\n", g.player.Health)
@@ -78,6 +92,8 @@ func (g *Game) Update() error {
   } 
 	return nil
 }
+
+  
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
