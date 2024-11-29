@@ -33,9 +33,11 @@ type Potion struct {
 }
 
 type Game struct{
-  player  *Player
-  enemies []*Enemy
-  potions []*Potion
+  player      *Player
+  enemies     []*Enemy
+  potions     []*Potion
+  tilemapJSON *TilemapJSON
+  tilemapImg  *ebiten.Image
 }
 
 
@@ -98,8 +100,35 @@ for _, potion := range g.potions {
 func (g *Game) Draw(screen *ebiten.Image) {
 
   screen.Fill(color.RGBA{120, 180, 255, 255})
-
   opts := ebiten.DrawImageOptions{}
+
+  //loop over the layers
+  for _, layer := range g.tilemapJSON.Layers {
+    for index, id := range layer.Data {
+      x := index % layer.Width
+      y := index / layer.Width
+
+      x *= 16
+      y *= 16
+
+      srcX := (id - 1) % 22
+      srcY := (id - 1) / 22
+
+      srcX *= 16
+      srcY *= 16
+
+      opts.GeoM.Translate(float64(x), float64(y))
+
+      screen.DrawImage(
+        g.tilemapImg.SubImage(image.Rect(srcX, srcY, srcX+16, srcY+16)).(*ebiten.Image),
+        &opts,
+        )
+
+      opts.GeoM.Reset()
+    }
+  }
+
+  // set the translation of our DrawImageOptions to the players position
   opts.GeoM.Translate(g.player.X, g.player.Y)
   // draw the Player
   screen.DrawImage(
@@ -153,22 +182,33 @@ func main() {
 	ebiten.SetWindowTitle("RPG Game Test")
   ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
-  PlayerImg, _, err := ebitenutil.NewImageFromFile("/home/ace/Golang/GoRPG/Assets/Images/ninja.png")
+  PlayerImg, _, err := ebitenutil.NewImageFromFile("Assets/Images/ninja.png")
   if err != nil {
     //handle the error
     log.Fatal(err)
   }
-  SkeletonImg, _, err := ebitenutil.NewImageFromFile("/home/ace/Golang/GoRPG/Assets/Images/skeleton.png")
+  SkeletonImg, _, err := ebitenutil.NewImageFromFile("Assets/Images/skeleton.png")
   if err != nil {
     //handle the error
     log.Fatal(err)
   }
-  potionImg, _, err := ebitenutil.NewImageFromFile("/home/ace/Golang/GoRPG/Assets/Images/potion.png")
+  potionImg, _, err := ebitenutil.NewImageFromFile("Assets/Images/potion.png")
   if err != nil {
     //handle the error
     log.Fatal(err)
   }
 
+  tilemapImg, _, err := ebitenutil.NewImageFromFile("Assets/Tilesets/TilesetFloor.png")
+  if err != nil {
+    //handle the error
+    log.Fatal(err)
+  }
+
+  
+  tilemapJSON, err := NewTilemapJSON("Assets/map/spawn.json")
+  if err != nil {
+   log.Fatal(err) 
+  }
   
   Game := Game {
     player: &Player{
@@ -207,6 +247,8 @@ func main() {
         1.0,
       },
     },
+    tilemapJSON: tilemapJSON,
+    tilemapImg: tilemapImg,
   }
 
   if err := ebiten.RunGame(&Game); err != nil {
