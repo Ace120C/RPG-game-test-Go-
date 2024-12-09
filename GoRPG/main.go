@@ -1,41 +1,22 @@
 package main
 
 import (
+	"GoRPG/entities"
 	"fmt"
 	"image"
 	"image/color"
 	"log"
-  "math"
+	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 
-type Sprite struct{
-  Img  *ebiten.Image
-  X, Y float64
-}
-
-type Player struct{
-  *Sprite
-  Health uint
-}
-
-type Enemy struct {
-  *Sprite
-  FollowsPlayer bool
-}
-
-type Potion struct {
-  *Sprite
-  AmtHeal uint
-}
-
 type Game struct{
-  player      *Player
-  enemies     []*Enemy
-  potions     []*Potion
+  player      *entities.Player
+  enemies     []*entities.Enemy
+  potions     []*entities.Potion
   tilemapJSON *TilemapJSON
   tilemapImg  *ebiten.Image
 }
@@ -211,40 +192,40 @@ func main() {
   }
   
   Game := Game {
-    player: &Player{
-      Sprite: &Sprite{
+    player: &entities.Player{
+      Sprite: &entities.Sprite{
         Img: PlayerImg,
         X: 50.0,
         Y: 50.0,
       }, 
       Health: 3,
     },
-    enemies: []*Enemy {
+    enemies: []*entities.Enemy {
       {
-        &Sprite{
+        Sprite: &entities.Sprite{
          Img: SkeletonImg,
           X: 100.0,
           Y: 100.0,
         },      
-        true,
+        FollowsPlayer: true,
       },
       {
-        &Sprite{
+        Sprite: &entities.Sprite{
           Img: SkeletonImg,
           X: 50.0,
           Y: 150.0,
         },      
-        false,
+        FollowsPlayer: false,
       },
     },
-    potions: []*Potion {
+    potions: []*entities.Potion {
       {
-        &Sprite{
+        Sprite: &entities.Sprite{
           Img: potionImg,
           X: 210.0,
           Y: 50.0,
         },
-        1.0,
+        AmtHeal: 1.0,
       },
     },
     tilemapJSON: tilemapJSON,

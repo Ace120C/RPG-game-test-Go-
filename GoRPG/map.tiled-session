@@ -42,12 +42,14 @@
     "map.width": 100,
     "openFiles": [
         "Assets/map/TilesetFloor.tsx",
-        "Assets/map/spawn.tmj"
+        "Assets/map/spawn.tmj",
+        "Assets/map/spawn.json"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
         "Assets/map/TilesetFloor.tsx",
-        "Assets/map/spawn.tmj"
+        "Assets/map/spawn.tmj",
+        "Assets/map/spawn.json"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
