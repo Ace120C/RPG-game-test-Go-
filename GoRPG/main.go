@@ -19,6 +19,7 @@ type Game struct{
   enemies     []*entities.Enemy
   potions     []*entities.Potion
   tilemapJSON *TilemapJSON
+  tilesets    []Tileset
   tilemapImg  *ebiten.Image
   cam         *Camera
 }
@@ -104,28 +105,35 @@ func (g *Game) Draw(screen *ebiten.Image) {
   opts := ebiten.DrawImageOptions{}
 
   //loop over tilemap layers, also id is just the position on where the slice of that tileset is at, it starts from left to right with the position being id: 0
-  for _, layer := range g.tilemapJSON.Layers {
+  for layerIndex, layer := range g.tilemapJSON.Layers {
     for index, id := range layer.Data {
+
+      if id == 0 {
+        continue
+      }
+
+
       x := index % layer.Width
       y := index / layer.Width
       //tilemaps are 16x16 pixels so what this does is basically cropping the whole image into a 16x16 picture
       x *= 16
       y *= 16
-
-      srcX := (id - 1) % 22
-      srcY := (id - 1) / 22
-
-      srcX *= 16
-      srcY *= 16
+      img := g.tilesets[layerIndex].Img(id)
 
       opts.GeoM.Translate(float64(x), float64(y))
-      
       opts.GeoM.Translate(g.cam.X, g.cam.Y)
-
-      screen.DrawImage(
-        g.tilemapImg.SubImage(image.Rect(srcX, srcY, srcX+16, srcY+16)).(*ebiten.Image),
-        &opts,
-        )
+      screen.DrawImage(img, &opts)
+      // srcX := (id - 1) % 22
+      // srcY := (id - 1) / 22
+      //
+      // srcX *= 16
+      // srcY *= 16
+      //
+      //
+      // screen.DrawImage(
+      //   g.tilemapImg.SubImage(image.Rect(srcX, srcY, srcX+16, srcY+16)).(*ebiten.Image),
+      //   &opts,
+      //   )
 
       opts.GeoM.Reset()
     }
@@ -208,7 +216,7 @@ func main() {
     log.Fatal(err)
   }
   //import the tileset
-  tilemapImg, _, err := ebitenutil.NewImageFromFile("Assets/Tilesets/TilesetFloor.png")
+  tilemapImg, _, err := ebitenutil.NewImageFromFile("./Assets/Tilesets/TilesetFloor.png")
   if err != nil {
     //handle the error
     log.Fatal(err)
@@ -221,6 +229,12 @@ func main() {
    log.Fatal(err) 
   }
   
+  
+  tilesets, err := tilemapJSON.GenTilesets()
+  if err != nil {
+    log.Fatal(err)
+  }
+
   //this is for the player and where it should be spawned, in this case 50 on the X axis and 50 on the Y axis
   Game := Game {
     player: &entities.Player{
@@ -263,6 +277,7 @@ func main() {
     },
     tilemapJSON: tilemapJSON,
     tilemapImg: tilemapImg,
+    tilesets: tilesets,
     //centering the camera on the screen
     cam: NewCamera(0.0, 0.0),
   }

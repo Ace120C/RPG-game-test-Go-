@@ -3,33 +3,49 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Assets/map/spawn.json",
+    "activeFile": "Assets/map/TilesetFloor.json",
     "expandedProjectPaths": [
-        "Assets/map",
+        "Assets",
         ".",
-        "Assets"
+        "Assets/map"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "Assets/map/TilesetFloor.json": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "Assets/map/TilesetFloor.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 2,
             "scaleInEditor": 3
         },
+        "Assets/map/buildings.json": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "Assets/map/spawn.json": {
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 300.6666666666667,
-                "y": 204.33333333333331
+                "x": 800,
+                "y": 545
             }
         },
         "Assets/map/spawn.tmj": {
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 300.6666666666667,
-                "y": 204.33333333333331
+                "x": 822.6666666666666,
+                "y": 640.3333333333333
             }
+        },
+        "TilesetFloor.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
     "last.exportedFilePath": "/home/ace/Golang/GoRPG/Assets/map",
@@ -41,19 +57,24 @@
     "map.tileWidth": 16,
     "map.width": 100,
     "openFiles": [
-        "Assets/map/TilesetFloor.tsx",
-        "Assets/map/spawn.tmj",
-        "Assets/map/spawn.json"
+        "Assets/map/spawn.json",
+        "Assets/map/buildings.json",
+        "Assets/map/TilesetFloor.json",
+        "TilesetFloor.tsx"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
-        "Assets/map/TilesetFloor.tsx",
+        "Assets/map/spawn.json",
+        "Assets/map/buildings.json",
+        "TilesetFloor.tsx",
+        "Assets/map/TilesetFloor.json",
         "Assets/map/spawn.tmj",
-        "Assets/map/spawn.json"
+        "Assets/map/TilesetFloor.tsx"
     ],
-    "tileset.lastUsedFormat": "tsx",
+    "tileset.lastUsedFormat": "json",
     "tileset.tileSize": {
         "height": 16,
         "width": 16
-    }
+    },
+    "tileset.type": 1
 }
