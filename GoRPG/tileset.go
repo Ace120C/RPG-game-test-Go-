@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
+  "fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
@@ -28,8 +28,8 @@ func (u *UniformTileset) Img(id int) *ebiten.Image{
 
   id -= u.gid
 
-  srcX := (id - 1) % 22
-  srcY := (id - 1) / 22
+  srcX := id % 22
+  srcY := id / 22
 
   srcX *= 16
   srcY *= 16
@@ -60,12 +60,15 @@ type DynTileset struct {
 
 func (d *DynTileset) Img(id int) *ebiten.Image{
   id -= d.gid
+ if id < 0 || id >= len(d.imgs) {
+        fmt.Printf("Invalid ID: %d for tileset with GID %d and length %d\n", id, d.gid, len(d.imgs))
+        return nil // Return nil or a default image if ID is invalid
+    }
+    srcX := (id - 1) % 22
+    srcY := (id - 1) / 22
 
-  srcX := (id - 1) % 22
-  srcY := (id - 1) / 22
-
-  srcX *= 16
-  srcY *= 16
+    srcX *= 16
+    srcY *= 16
   return d.imgs[id]
 }
 

@@ -118,9 +118,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
       //tilemaps are 16x16 pixels so what this does is basically cropping the whole image into a 16x16 picture
       x *= 16
       y *= 16
+      fmt.Println(layer.Data)
       img := g.tilesets[layerIndex].Img(id)
 
+      if img == nil {
+        fmt.Printf("Skipping invalid tile with ID: %d at layerIndex: %d\n", id, layerIndex)
+        continue
+      }
       opts.GeoM.Translate(float64(x), float64(y))
+      opts.GeoM.Translate(0.0, -(float64(img.Bounds().Dy())+16))
       opts.GeoM.Translate(g.cam.X, g.cam.Y)
       screen.DrawImage(img, &opts)
       // srcX := (id - 1) % 22
