@@ -3,11 +3,11 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Assets/map/TilesetFloor.json",
+    "activeFile": "Assets/map/spawn.json",
     "expandedProjectPaths": [
+        "Assets/map",
         "Assets",
-        ".",
-        "Assets/map"
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -30,8 +30,8 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 800,
-                "y": 545
+                "x": 215.3333333333333,
+                "y": 179
             }
         },
         "Assets/map/spawn.tmj": {
@@ -59,15 +59,14 @@
     "openFiles": [
         "Assets/map/spawn.json",
         "Assets/map/buildings.json",
-        "Assets/map/TilesetFloor.json",
-        "TilesetFloor.tsx"
+        "Assets/map/TilesetFloor.json"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
-        "Assets/map/spawn.json",
-        "Assets/map/buildings.json",
-        "TilesetFloor.tsx",
         "Assets/map/TilesetFloor.json",
+        "Assets/map/buildings.json",
+        "Assets/map/spawn.json",
+        "TilesetFloor.tsx",
         "Assets/map/spawn.tmj",
         "Assets/map/TilesetFloor.tsx"
     ],
