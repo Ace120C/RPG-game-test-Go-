@@ -3,16 +3,34 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"path"
 )
 
 type TilemapplayerJSON struct {
-  Data []int  `json:"data"`
-  Width int   `json:"width"`
-  Height int  `json:"height"`
+  Data []int    `json:"data"`
+  Width int     `json:"width"`
+  Height int    `json:"height"`
+  Name   string `json:"name"`
 }
 
 type TilemapJSON struct {
   Layers []TilemapplayerJSON `json:"layers"`
+  Tilesets []map[string]any  `json:"Tilesets"` 
+}
+
+func (t *TilemapJSON)  GenTilesets() ([]Tileset, error){
+  tilesets := make([]Tileset, 0)
+
+  for _, tilesetData := range t.Tilesets{
+    tilesetPath := path.Join("Assets/map/", tilesetData["source"].(string))
+    tileset, err := NewTileset(tilesetPath, int(tilesetData["firstgid"].(float64)))
+
+    if err != nil {
+      return nil, err
+    }
+    tilesets = append(tilesets, tileset)
+  }
+  return tilesets, nil
 }
 
 func NewTilemapJSON(filepath string) (*TilemapJSON, error) {
