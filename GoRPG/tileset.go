@@ -64,6 +64,10 @@ func (d *DynTileset) Img(id int) *ebiten.Image{
 
     srcX *= 16
     srcY *= 16
+    //fix for the index out of range error
+    if id <= 3 {
+      id -= 1
+    }
   return d.imgs[id]
 }
 

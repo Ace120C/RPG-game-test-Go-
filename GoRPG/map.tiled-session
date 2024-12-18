@@ -5,8 +5,8 @@
     },
     "activeFile": "Assets/map/spawn.json",
     "expandedProjectPaths": [
-        "Assets/map",
         "Assets",
+        "Assets/map",
         "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -31,7 +31,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 215.3333333333333,
-                "y": 179
+                "y": 93
             }
         },
         "Assets/map/spawn.tmj": {
@@ -49,7 +49,7 @@
         }
     },
     "last.exportedFilePath": "/home/ace/Golang/GoRPG/Assets/map",
-    "last.imagePath": "/home/ace/Golang/GoRPG/Assets/Tilesets",
+    "last.imagePath": "/home/ace/Golang/GoRPG/Assets/Images/buildings",
     "map.height": 80,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "json",

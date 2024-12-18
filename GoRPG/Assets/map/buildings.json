@@ -28,7 +28,7 @@
          "id":3,
          "image":"..\/Images\/buildings\/House3.png",
          "imageheight":48,
-         "imagewidth":64
+         "imagewidth":48
         }],
  "tilewidth":64,
  "type":"tileset",
